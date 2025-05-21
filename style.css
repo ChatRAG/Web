@@ -1,22 +1,69 @@
+/* General styles */
 body {
-    font-family: sans-serif;
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff; /* White background */
+    color: #333333; /* Dark text for contrast */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.chat-box {
+    background-color: #f0f0f0; /* Light grey chat box */
+    border: 2px solid #000000; /* Black border around chat box */
+    border-radius: 15px;
     padding: 20px;
-    max-width: 600px;
-    margin: auto;
+    width: 50%; /* 50% width */
+    height: 90%; /* 90% height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+h2, h3 {
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+    color: #333;
 }
 
 #messages {
     white-space: pre-wrap;
-    border: 1px solid #ccc;
+    border: 1px solid #d3d3d3; /* Light gray border for message box */
     padding: 10px;
-    height: 300px;
+    height: calc(90% - 60px); /* Adjust for header space */
     overflow-y: auto;
     margin-bottom: 10px;
-    width: 100%;
+    background-color: #ffffff; /* White background for messages */
+    border-radius: 10px;
+    color: #333; /* Dark text inside message box */
 }
 
 #input-box {
     width: 100%;
     padding: 10px;
     font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid #d3d3d3; /* Gray border for input box */
+    background-color: #ffffff; /* White background for input box */
+    color: #333; /* Dark text */
+}
+
+#input-box:focus {
+    outline: none;
+    border: 1px solid #000000; /* Black border on focus */
+    background-color: #f9f9f9; /* Slightly darker background on focus */
+}
+
+textarea {
+    resize: none;
 }
