@@ -1,0 +1,73 @@
+const socket = new WebSocket('wss://4tsz2qrlo8.execute-api.ap-southeast-2.amazonaws.com/production');
+let botMessageParagraph = null; // To accumulate bot messages
+let botMessageMarkdown = null;
+
+socket.onopen = () => {
+    console.log('WebSocket connected!');
+};
+
+socket.onerror = (error) => {
+    console.error('WebSocket error:', error);
+};
+
+socket.onclose = () => {
+    console.log('WebSocket connection closed');
+};
+
+socket.onmessage = (event) => {
+    const message = JSON.parse(event.data);
+    const messagesDiv = document.getElementById('messages');
+
+    if (message.event === 'message') {
+        // If no bot message paragraph exists, create one
+        if (!botMessageParagraph) {
+            botMessageParagraph = document.createElement('p');
+            botMessageMarkdown = "**Bot:** ";
+            messagesDiv.appendChild(botMessageParagraph);
+        }
+
+        botMessageMarkdown += message.data;
+
+        // Convert markdown to HTML using marked.js
+        const markdownContent = marked.parse(botMessageMarkdown);
+
+        // Append the current chunk of the message to the paragraph
+        botMessageParagraph.innerHTML = markdownContent;
+
+        messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto scroll to the bottom
+    } else if (message.event === 'completed') {
+        // When the message is completed, finalize the current paragraph
+        if (botMessageParagraph) {
+            botMessageParagraph = null; // Reset to start a new paragraph for next message
+            botMessageMarkdown = null;
+        }
+
+        messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto scroll to the bottom
+    }
+};
+
+const input = document.getElementById("input-box");
+input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        e.preventDefault(); // Prevent new line in the input box
+        const message = document.getElementById('input-box').value.trim();
+        if (message !== '') {
+            const payload = {
+                action: 'sendmessage',
+                message: message
+            };
+
+            // Send the message to the server
+            socket.send(JSON.stringify(payload));
+
+            // Display the user message
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto scroll to the bottom
+
+            // Clear input box
+            document.getElementById('input-box').value = '';
+            document.getElementById('input-box').focus();
+        }
+    }
+});

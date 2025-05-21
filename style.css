@@ -1,0 +1,22 @@
+body {
+    font-family: sans-serif;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+}
+
+#messages {
+    white-space: pre-wrap;
+    border: 1px solid #ccc;
+    padding: 10px;
+    height: 300px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+#input-box {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
