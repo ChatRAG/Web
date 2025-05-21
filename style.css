@@ -28,6 +28,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    box-sizing: border-box; /* Ensures padding doesn't extend the size */
 }
 
 h2, h3 {
@@ -46,6 +47,7 @@ h2, h3 {
     background-color: #ffffff; /* White background for messages */
     border-radius: 10px;
     color: #333; /* Dark text inside message box */
+    box-sizing: border-box; /* Ensures padding doesn't extend the size */
 }
 
 #input-box {
@@ -56,6 +58,7 @@ h2, h3 {
     border: 1px solid #d3d3d3; /* Gray border for input box */
     background-color: #ffffff; /* White background for input box */
     color: #333; /* Dark text */
+    box-sizing: border-box; /* Ensures padding doesn't extend the size */
 }
 
 #input-box:focus {
