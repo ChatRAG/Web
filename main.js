@@ -2,6 +2,9 @@ const socket = new WebSocket('wss://4tsz2qrlo8.execute-api.ap-southeast-2.amazon
 let botMessageParagraph = null; // To accumulate bot messages
 let botMessageMarkdown = null;
 
+const input = document.getElementById("input-box");
+input.disabled = true; // Disable input by default
+
 function setZeroMarginRecursively(element) {
     // Check if the element has margin
     const style = window.getComputedStyle(element);
@@ -19,14 +22,17 @@ function setZeroMarginRecursively(element) {
 
 socket.onopen = () => {
     console.log('WebSocket connected!');
+    input.disabled = false; // Enable the input box once WebSocket is connected
 };
 
 socket.onerror = (error) => {
     console.error('WebSocket error:', error);
+    input.disabled = true; // Disable input if there's a WebSocket error
 };
 
 socket.onclose = () => {
     console.log('WebSocket connection closed');
+    input.disabled = true; // Disable input when WebSocket is closed
 };
 
 socket.onmessage = (event) => {
@@ -64,7 +70,6 @@ socket.onmessage = (event) => {
     }
 };
 
-const input = document.getElementById("input-box");
 input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
         e.preventDefault(); // Prevent new line in the input box
