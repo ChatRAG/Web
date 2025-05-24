@@ -122,6 +122,14 @@ document.getElementById("uploadButton").addEventListener("click", async () => {
     fileInput.click();
 });
 
+document.getElementById('collapseButton').addEventListener('click', function () {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('collapsed');
+
+    // Optional: Change the arrow direction if you're not rotating it with CSS
+    // this.textContent = sidebar.classList.contains('collapsed') ? '>' : '<';
+});
+
 // Helper function to convert file to base64
 function readFileAsBase64(file) {
     return new Promise((resolve, reject) => {
