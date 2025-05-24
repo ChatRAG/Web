@@ -2,6 +2,7 @@ const socket = new WebSocket('wss://4tsz2qrlo8.execute-api.ap-southeast-2.amazon
 let botMessageParagraph = null; // To accumulate bot messages
 let botMessageMarkdown = null;
 
+const BotName = "RAG-Assistant"
 const input = document.getElementById("input-box");
 input.disabled = true; // Disable input by default
 
@@ -23,16 +24,37 @@ function setZeroMarginRecursively(element) {
 socket.onopen = () => {
     console.log('WebSocket connected!');
     input.disabled = false; // Enable the input box once WebSocket is connected
+
+    const messagesDiv = document.getElementById('messages');
+    const greetingParagraph = document.createElement('p');
+    greetingParagraph.innerHTML = marked.parse(`**${BotName}:** Hello! How can I assist you today?`);
+    setZeroMarginRecursively(greetingParagraph);
+    messagesDiv.appendChild(greetingParagraph);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
 };
 
 socket.onerror = (error) => {
     console.error('WebSocket error:', error);
     input.disabled = true; // Disable input if there's a WebSocket error
+
+    const messagesDiv = document.getElementById('messages');
+    const goodbyeParagraph = document.createElement('p');
+    goodbyeParagraph.innerHTML = marked.parse(`**${BotName}:** Bot encountered a problem, error=${error}`);
+    setZeroMarginRecursively(goodbyeParagraph);
+    messagesDiv.appendChild(goodbyeParagraph);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
 };
 
 socket.onclose = () => {
     console.log('WebSocket connection closed');
     input.disabled = true; // Disable input when WebSocket is closed
+
+    const messagesDiv = document.getElementById('messages');
+    const goodbyeParagraph = document.createElement('p');
+    goodbyeParagraph.innerHTML = marked.parse(`**${BotName}:** Chat connection has been closed, Goodbye!`);
+    setZeroMarginRecursively(goodbyeParagraph);
+    messagesDiv.appendChild(goodbyeParagraph);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
 };
 
 socket.onmessage = (event) => {
@@ -43,7 +65,7 @@ socket.onmessage = (event) => {
         // If no bot message paragraph exists, create one
         if (!botMessageParagraph) {
             botMessageParagraph = document.createElement('p');
-            botMessageMarkdown = "**Bot:** ";
+            botMessageMarkdown = `**${BotName}:** `;
             messagesDiv.appendChild(botMessageParagraph);
         }
 
