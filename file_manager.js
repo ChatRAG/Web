@@ -114,6 +114,8 @@ document.getElementById("uploadButton").addEventListener("click", async () => {
             if (response.ok) {
                 alert("File uploaded successfully.");
                 loadFileList();
+            } else if (response.status == 409) {
+                alert("File already exists.");
             } else {
                 alert(`Failed to upload file. (HTTP ${response.status})`);
             }
