@@ -201,3 +201,53 @@ textarea {
     gap: 10px;
     align-items: center;
 }
+
+/* === Responsive Design for Mobile Devices === */
+@media (max-width: 768px) {
+    /* Hide top-right logos */
+    .top-right-logos {
+        display: none;
+    }
+
+    /* Default collapsed sidebar on mobile */
+    .sidebar {
+        width: 60px;
+    }
+
+    .sidebar #fileManagement {
+        display: none;
+    }
+
+    .sidebar.collapsed {
+        width: 80%; /* Expand to 80% of screen */
+    }
+
+    .sidebar.collapsed #fileManagement {
+        display: block;
+    }
+
+    .chat-box {
+        left: 50%;
+        width: calc(100% - 60px); /* Adjust based on collapsed sidebar width */
+    }
+
+    .sidebar.collapsed ~ .chat-box {
+        left: 90%; /* Center relative to expanded sidebar */
+        width: 20%;
+    }
+
+    /* Optional: Ensure chat-box doesn't overflow on small screens */
+    .chat-box {
+        padding: 10px;
+    }
+
+    #messages {
+        height: 50vh;
+    }
+
+    #input-box {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+

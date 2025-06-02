@@ -3,6 +3,9 @@ let credentials = JSON.parse(localStorage.getItem("credentials")) || null;
 
 document.addEventListener("DOMContentLoaded", async () => {
     loadFileList();
+    if (window.innerWidth <= 768) {
+        document.getElementById("sidebar").classList.add("collapsed");
+    }
 });
 
 // Generate new credentials
