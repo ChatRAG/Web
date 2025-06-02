@@ -214,7 +214,7 @@ textarea {
     }
 
     .sidebar #fileManagement {
-        display: none;
+        display: block;
     }
 
     .sidebar.collapsed {
@@ -222,16 +222,15 @@ textarea {
     }
 
     .sidebar.collapsed #fileManagement {
-        display: block;
+        display: none;
     }
 
     .chat-box {
-        width: 0%; /* Hide */
+        display: none;
     }
 
     .sidebar.collapsed ~ .chat-box {
-        left: 62%;
-        width: calc(100% - 60px); /* Adjust based on collapsed sidebar width */
+        display: block;
     }
 
     #messages {
