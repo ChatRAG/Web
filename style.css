@@ -232,7 +232,7 @@ textarea {
     }
 
     .chat-box {
-        left: 120%;
+        left: 150%;
     }
 
     .sidebar.collapsed ~ .chat-box {
