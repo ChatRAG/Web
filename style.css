@@ -209,9 +209,8 @@ textarea {
         display: none;
     }
 
-    /* Default collapsed sidebar on mobile */
     .sidebar {
-        width: 60px;
+        width: 80%; /* Expand to 80% of screen */
     }
 
     .sidebar #fileManagement {
@@ -219,7 +218,7 @@ textarea {
     }
 
     .sidebar.collapsed {
-        width: 80%; /* Expand to 80% of screen */
+        width: 80px;
     }
 
     .sidebar.collapsed #fileManagement {
@@ -227,18 +226,12 @@ textarea {
     }
 
     .chat-box {
-        left: 50%;
-        width: calc(100% - 60px); /* Adjust based on collapsed sidebar width */
+        width: 0%; /* Hide */
     }
 
     .sidebar.collapsed ~ .chat-box {
-        left: 90%; /* Center relative to expanded sidebar */
-        width: 20%;
-    }
-
-    /* Optional: Ensure chat-box doesn't overflow on small screens */
-    .chat-box {
-        padding: 10px;
+        left: 62%;
+        width: calc(100% - 60px); /* Adjust based on collapsed sidebar width */
     }
 
     #messages {
