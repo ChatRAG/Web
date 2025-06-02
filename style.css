@@ -236,7 +236,7 @@ textarea {
     }
 
     .sidebar.collapsed ~ .chat-box {
-        left: 70%;
+        left: 62%;
     }
 
     #messages {
