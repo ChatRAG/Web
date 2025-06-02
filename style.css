@@ -117,6 +117,15 @@ textarea {
     transition: background-color 0.2s ease;
 }
 
+.file-item a {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+    margin-right: 10px;
+}
+
 .file-item:hover {
     background-color: #e3e3e4;
 }
