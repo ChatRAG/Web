@@ -8,13 +8,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-// Generate new credentials
 async function generateCredentials(password) {
     const response = await fetch(`${API_BASE_URL}/gen_credentials`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password: password }),
     });
+
+    if (!response.ok) {
+        throw new Error(`Credential generation failed (HTTP ${response.status})`);
+    }
 
     const data = await response.json();
     credentials = {
@@ -68,31 +71,37 @@ async function loadFileList() {
 
 // Delete file
 async function deleteFile(fileKey) {
-    await checkAndGenerateCredentials();
-    if (confirm("Are you sure you want to delete this file?")) {
-        const response = await fetch(`${API_BASE_URL}/delete_doc`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                FileKey: fileKey,
-                AccessKeyId: credentials.AccessKeyId,
-                SecretKey: credentials.SecretKey,
-                SessionToken: credentials.SessionToken,
-            }),
-        });
+    if (!confirm("Are you sure you want to delete this file?")) {
+        return; // User canceled
+    }
 
-        if (response.ok) {
-            alert("File deleted successfully.");
-            loadFileList();
-        } else {
-            alert(`Failed to delete file. (HTTP ${response.status})`);
-        }
+    try {
+        await checkAndGenerateCredentials();
+    } catch {
+        return; // Abort delete operation
+    }
+
+    const response = await fetch(`${API_BASE_URL}/delete_doc`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            FileKey: fileKey,
+            AccessKeyId: credentials.AccessKeyId,
+            SecretKey: credentials.SecretKey,
+            SessionToken: credentials.SessionToken,
+        }),
+    });
+
+    if (response.ok) {
+        alert("File deleted successfully.");
+        loadFileList();
+    } else {
+        alert(`Failed to delete file. (HTTP ${response.status})`);
     }
 }
 
-// Upload file
 document.getElementById("uploadButton").addEventListener("click", async () => {
-    await checkAndGenerateCredentials();
+
     const fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.accept = "*/*";
@@ -100,6 +109,11 @@ document.getElementById("uploadButton").addEventListener("click", async () => {
         const file = event.target.files[0];
         if (file) {
             const fileData = await readFileAsBase64(file);
+            try {
+                await checkAndGenerateCredentials();
+            } catch {
+                return; // Abort upload operation
+            }
             const response = await fetch(`${API_BASE_URL}/upload_doc`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -167,13 +181,17 @@ async function openFileUrl(fileKey) {
 
 // Check and regenerate credentials if expired or missing
 async function checkAndGenerateCredentials() {
-    console.log(credentials)
     if (!credentials || 
         !credentials.AccessKeyId || 
         !credentials.SecretKey || 
         !credentials.SessionToken ||
-         isCredentialsExpired(credentials)) {
-        await showPasswordDialog();
+        isCredentialsExpired(credentials)) {
+        try {
+            await showPasswordDialog();
+        } catch (err) {
+            alert("Incorrect password");
+            throw err; // Propagate the error to abort further execution
+        }
     }
 }
 
